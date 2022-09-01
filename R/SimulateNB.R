@@ -9,10 +9,7 @@
 #' @keywords cats
 #' @export
 #' @examples
-#' cat_function()
-
-
-
+#' 
 
 SimulateNB <- function(nSamples,
                        nGenes,
