@@ -1,3 +1,19 @@
+#' Simulating RNA-Seq Data from NB distribution
+#' 
+#' This functions allows you to generate RNA-Seq like data from a negative 
+#' binomial distribution.
+#' @param nSamples number of generated samples. Must be divisible by two as our
+#' group sizes are equal
+#' @param nGenes number of generated genes.
+#'  
+#' @keywords cats
+#' @export
+#' @examples
+#' cat_function()
+
+
+
+
 SimulateNB <- function(nSamples,
                        nGenes,
                        offset = rep(1, nSamples),
@@ -8,7 +24,7 @@ SimulateNB <- function(nSamples,
                        beta = rep(0, nGenes)){
 
 
-  ## We create the matrices of the two groups seperately. Each Matrix
+  ## We create the matrices of the two groups separately. Each Matrix
   ## must consist of n_genes rows and n_samples/2 columns.
   betaArray <- exp(t(apply(matrix(c(0, 1), nrow = nSamples/2, ncol = nGenes), 1, function(r) r * beta)))
   mu1array <- t(array(mu1, dim = c(nGenes, nSamples/2))) * betaArray
