@@ -19,7 +19,10 @@ SimulateNB <- function(nSamples,
                        phi1,
                        phi2,
                        beta = rep(0, nGenes)){
-
+  ## Check conditions
+  if (nSamples %% 2 != 0){
+    stop("nSamples must be an even number")
+  }
 
   ## We create the matrices of the two groups separately. Each Matrix
   ## must consist of n_genes rows and n_samples/2 columns.
