@@ -13,8 +13,7 @@
 #' Y <- rnbinom(40*100, mu = 10, size = 1/0.2)
 #' Y <- data.frame(array(Y, dim = c(40, 100)))
 #' X <- as.factor(rep(c("A", "B"), each = 20))
-#' ClassicPermTest(X, Y, 100)
-
+#' FlipScoresTestNoCovBasic (X, Y, 100)
 
 FlipScoresTestNoCovBasic <- function(X, Y, nPerm){
   ## Normalize Data Using EdgeR
@@ -35,13 +34,13 @@ FlipScoresTestNoCovBasic <- function(X, Y, nPerm){
   )
   
   ### create array to flip score contributions
-  flipArray <- array(rbinom(nrow(Y)*nPerm, size = 1, prob = 0.5)*2-1, dim = c(20,40))
+  flipArray <- array(rbinom(nrow(Y)*nPerm, size = 1, prob = 0.5)*2-1, dim = c(nPerm,nrow(Y)))
   
   ### first row is identity flip
   flipArray[1,] <- 1
   
   ### matrix multiplication to compute test statistics
-  testStatistics <- flipArray %*% scores
+  testStatistics <- abs(flipArray %*% scores)
   
   ## compute proportion of permutation test-statistics larger than the observed ones
   pVals <- rowMeans(apply(testStatistics, 1, function(i) i >= testStatistics[1,]))

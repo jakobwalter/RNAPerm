@@ -28,5 +28,5 @@ MWUTest <- function(X, Y){
     }
     )
 
-  return(pVals)
+  return(as.vector(pVals))
 }

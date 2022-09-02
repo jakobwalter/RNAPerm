@@ -29,12 +29,12 @@ ClassicPermTest <- function(X, Y, nPerm){
   testStatistics <- array(dim = c(nPerm, ncol(Y)))
   
   ## first test-statistics are the ones observed
-  testStatistics[1,] <- colMeans(Y[X == levels(X)[1],]) - colMeans(Y[X == levels(X)[2],])
+  testStatistics[1,] <- abs(colMeans(Y[X == levels(X)[1],]) - colMeans(Y[X == levels(X)[2],]))
   
   ## Compute permutation test-statistics using nPerm-1 permutations
   for (i in 2:nPerm){
     XPerm <- sample(X)
-    testStatistics[i,] <- colMeans(Y[XPerm == levels(X)[1],]) - colMeans(Y[XPerm == levels(X)[2],])
+    testStatistics[i,] <- abs(colMeans(Y[XPerm == levels(X)[1],]) - colMeans(Y[XPerm == levels(X)[2],]))
   }
   
   ## compute proportion of permutation test-statistics larger than the observed ones

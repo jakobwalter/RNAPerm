@@ -16,41 +16,28 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(RNAPerm)
-
 ```
+
 
 
 ```{r}
 ### Generate data from NB distribution and put into array
-Y <- rnbinom(40*100, mu = 10, size = 1/0.2)
-Y <- data.frame(array(Y, dim = c(40, 100)))
-X <- as.factor(rep(c("A", "B"), each = 20))
-ClassicPermTest(X, Y, 100)
-```
-
-
-```{r}
-XRecoded <- (X == X[1])*2-1
-scores <- apply(Y, 2, function(YCol){
-  modNull<- glm(YCol ~ 1, family = poisson)
-  XRecoded*residuals(modNull, type = "response")
-}
-)
-flipArray <- array(rbinom(20*40, size = 1, prob = 0.5)*2-1, dim = c(20,40))
-flipArray[1,] <- 1
-testStatistics <- flipArray %*% scores
-pVals <- rowMeans(apply(testStatistics, 1, function(i) i >= testStatistics[1,]))
+Y <- rnbinom(200*10000, mu = 10, size = 1/2)
+Y <- data.frame(array(Y, dim = c(200, 10000)))
+X <- as.factor(rep(c("A", "B"), each = 100))
+p1 <- ClassicPermTest(X, Y, 1000)
+p2 <- MWUTest(X, Y)
+p3 <- FlipScoresTestNoCovBasic(X, Y, 1000)
 ```
 
 ```{r}
-
+x <- seq(0, 1, length.out = 10000)
+plot(x, sort(p1), type = "l", col = "purple")
+lines(x, sort(p2), col = "darkgreen")
+lines(x, sort(p3), col = "blue")
+lines(x, x, col = "red")
 ```
 
 
-
-
-```{r}
-pVals
-```
 
 

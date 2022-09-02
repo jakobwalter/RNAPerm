@@ -22,6 +22,6 @@ difference in means. The data is normalized using edgeR.
 Y <- rnbinom(40*100, mu = 10, size = 1/0.2)
 Y <- data.frame(array(Y, dim = c(40, 100)))
 X <- as.factor(rep(c("A", "B"), each = 20))
-ClassicPermTest(X, Y, 100)
+FlipScoresTestNoCovBasic (X, Y, 100)
 }
 \keyword{Internal}
