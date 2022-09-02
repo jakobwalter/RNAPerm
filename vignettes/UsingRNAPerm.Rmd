@@ -22,18 +22,15 @@ library(RNAPerm)
 
 ```{r}
 ### Generate data from NB distribution and put into array
-Y <- rnbinom(80*1000, mu = 10, size = 1/0.2)
-Y <- data.frame(array(Y, dim = c(80, 1000)))
-X <- as.factor(rep(c("A", "B"), each = 40))
+Y <- rnbinom(40*100, mu = 10, size = 1/0.2)
+Y <- data.frame(array(Y, dim = c(40, 100)))
+X <- as.factor(rep(c("A", "B"), each = 20))
+ClassicPermTest(X, Y, 100)
 ```
 
 
 
 ```{r}
-
-```
-
-```{r}
-hist(ClassicPermTest(X, Y, 1000), breaks = 100)
+hist(, breaks = 100)
 ```
 
