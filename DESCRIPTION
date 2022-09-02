@@ -2,8 +2,7 @@ Package: RNAPerm
 Title: Testing Differential Expression using Permutation Tests.
 Version: 0.0.0.9000
 Authors@R: 
-    person("Jakob", "Walter", , "jakob.walter@outlook.de", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+    person("Jakob", "Walter", , "jakob.walter@outlook.de", role = "aut")
 Description: Implements Permutation Tests for RNA-Seq Data. Additional to classical permutation tests and the Mann-Whitney U-Test, the FlipScores Test is implemented.
 License: MIT + file LICENSE
 Encoding: UTF-8

@@ -6,6 +6,7 @@
 #' The levels encode the two different classes that are to be tested for differential expression.
 #' @param Y An array or dataframe 
 #' @param nPerm Number of random permutations used for the computation of the p-value
+#' @keyword Internal
 #' @import edgeR
 #' @export
 #' @examples
@@ -15,30 +16,34 @@
 #' ClassicPermTest(X, Y, 100)
 
 
-ClassicPermTest <- function(X, Y, nPerm){
+FlipScoresTestNoCovBasic <- function(X, Y, nPerm){
   ## Normalize Data Using EdgeR
   
   ### Compute Normalization Factors
   d <- edgeR::DGEList(counts = Y)
   d <- edgeR::calcNormFactors(d)
+  os <- edgeR::getOffset(d)
   
-  ### Normalize Data
-  Y <- d$counts * d$samples$norm.factors
+  ### Recode X to be in (-1, 1)
+  XRecoded <- (X == X[1])*2-1
   
-  ## Create empty array for test statistics
-  testStatistics <- array(dim = c(nPerm, ncol(Y)))
-  
-  ## first test-statistics are the ones observed
-  testStatistics[1,] <- colMeans(Y[X == levels(X)[1],]) - colMeans(Y[X == levels(X)[2],])
-  
-  ## Compute permutation test-statistics using nPerm-1 permutations
-  for (i in 2:nPerm){
-    XPerm <- sample(X)
-    testStatistics[i,] <- colMeans(Y[XPerm == levels(X)[1],]) - colMeans(Y[XPerm == levels(X)[2],])
+  ### compute table of scores
+  scores <- apply(Y, 2, function(YCol){
+    modNull<- glm(YCol ~ 1, family = poisson)
+    XRecoded*residuals(modNull, type = "response")
   }
+  )
+  
+  ### create array to flip score contributions
+  flipArray <- array(rbinom(nrow(Y)*nPerm, size = 1, prob = 0.5)*2-1, dim = c(20,40))
+  
+  ### first row is identity flip
+  flipArray[1,] <- 1
+  
+  ### matrix multiplication to compute test statistics
+  testStatistics <- flipArray %*% scores
   
   ## compute proportion of permutation test-statistics larger than the observed ones
   pVals <- rowMeans(apply(testStatistics, 1, function(i) i >= testStatistics[1,]))
-  
   return(pVals)
 }

@@ -29,8 +29,28 @@ ClassicPermTest(X, Y, 100)
 ```
 
 
+```{r}
+XRecoded <- (X == X[1])*2-1
+scores <- apply(Y, 2, function(YCol){
+  modNull<- glm(YCol ~ 1, family = poisson)
+  XRecoded*residuals(modNull, type = "response")
+}
+)
+flipArray <- array(rbinom(20*40, size = 1, prob = 0.5)*2-1, dim = c(20,40))
+flipArray[1,] <- 1
+testStatistics <- flipArray %*% scores
+pVals <- rowMeans(apply(testStatistics, 1, function(i) i >= testStatistics[1,]))
+```
 
 ```{r}
-hist(, breaks = 100)
+
 ```
+
+
+
+
+```{r}
+pVals
+```
+
 
