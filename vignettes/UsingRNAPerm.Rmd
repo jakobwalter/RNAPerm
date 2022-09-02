@@ -1,0 +1,39 @@
+---
+title: "UsingRNAPerm"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{UsingRNAPerm}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(RNAPerm)
+
+```
+
+
+```{r}
+### Generate data from NB distribution and put into array
+Y <- rnbinom(80*1000, mu = 10, size = 1/0.2)
+Y <- data.frame(array(Y, dim = c(80, 1000)))
+X <- as.factor(rep(c("A", "B"), each = 40))
+```
+
+
+
+```{r}
+
+```
+
+```{r}
+hist(ClassicPermTest(X, Y, 1000), breaks = 100)
+```
+
