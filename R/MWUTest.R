@@ -10,7 +10,7 @@
 #' Y <- rnbinom(40*100, mu = 10, size = 1/0.2)
 #' Y <- data.frame(array(Y, dim = c(40, 100)))
 #' X <- as.factor(rep(c("A", "B"), each = 20))
-#' ClassicPermTest(X, Y, 100)
+#' MWUTest(X, Y, 100)
 
 
 MWUTest <- function(X, Y){

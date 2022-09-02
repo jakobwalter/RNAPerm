@@ -6,7 +6,7 @@
 #' The levels encode the two different classes that are to be tested for differential expression.
 #' @param Y An array or dataframe 
 #' @param nPerm Number of random permutations used for the computation of the p-value
-#' @keyword Internal
+#' @keywords Internal
 #' @import edgeR
 #' @export
 #' @examples
