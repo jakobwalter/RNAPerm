@@ -13,6 +13,12 @@
 #' @param nPerm Number of random permutations used for the computation of the p-value
 #' @author Jakob Walter
 #' @import edgeR
+#' @importFrom stats as.formula
+#' @importFrom utils tail
+#' @importFrom stats glm
+#' @importFrom stats residuals
+#' @importFrom stats rbinom
+#' @importFrom stats rnbinom
 #' @export
 #' @examples
 #' Y <- rnbinom(20*10, mu = 10, size = 1/0.2)
@@ -21,7 +27,7 @@
 #' design <- model.matrix(~X1, contrasts.arg = list(X1 = "contr.sum"))
 #' dge <- edgeR::DGEList(counts = t(Y), group = X1)
 #' dge <- edgeR::calcNormFactors(dge)
-#' flipScoresTest(dge, design, 200)
+#' flipScoresTest(dge, design, scoreType = c("basic"), nPerm = 100)
 
 flipScoresTest <- function(dge, design, scoreType = c("basic", "effective"),  toBeTested = 2, nPerm = 5000){
   scoreType <- match.arg(scoreType)
@@ -69,8 +75,8 @@ flipScoresTest <- function(dge, design, scoreType = c("basic", "effective"),  to
   
   
   ### create array to flip score contributions
-  flipArray <- array(rbinom(nrow(Y)*nPerm, size = 1, prob = 0.5)*2-1, 
-                     dim = c(nPerm,nrow(Y))
+  flipArray <- array(rbinom(ncol(dge$counts)*nPerm, size = 1, prob = 0.5)*2-1, 
+                     dim = c(nPerm,ncol(dge$counts))
   )
   
   ### first row is identity flip

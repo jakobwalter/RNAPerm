@@ -21,7 +21,7 @@ library(RNAPerm)
 
 ```{r Generate Example Data}
 n <- 12
-p <- 1000
+p <- 10
 Y <- rnbinom(n*p, mu = 10, size = 1/0.2)
 Y <- data.frame(array(Y, dim = c(n, p)))
 X1 <- as.factor(rep(c("A", "B"), each = n/2))
@@ -31,10 +31,10 @@ dge <- edgeR::calcNormFactors(dge)
 ```
 
 ```{r Get p-values}
-pClassic <- classicPermTest(dge, design, 2000)
-pMWU     <- classicPermTest(dge, design, 2000)
-pFlipScoresBasic <- FlipScoresTest(dge, design, scoreType = "basic", toBeTested = 2)
-pFlipScoresEffective <- FlipScoresTest(dge, design, scoreType = "effective", toBeTested = 2)
+pClassic <- classicPermTest(dge, design, 200)
+pMWU     <- classicPermTest(dge, design, 200)
+pFlipScoresBasic <- flipScoresTest(dge, design, scoreType = "basic", toBeTested = 2)
+pFlipScoresEffective <- flipScoresTest(dge, design, scoreType = "effective", toBeTested = 2)
 ```
 
 

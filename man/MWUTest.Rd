@@ -2,22 +2,28 @@
 % Please edit documentation in R/MWUTest.R
 \name{MWUTest}
 \alias{MWUTest}
-\title{MWU-Test for RNA-Seq Data}
+\title{MWU test for RNA-Seq Data}
 \usage{
 MWUTest(dge, design)
 }
 \arguments{
-\item{X}{A vector encoded as a factor with two levels.
-The levels encode the two different classes that are to be tested for differential expression.}
+\item{dge}{A dgeList object, created with edgeR, containing the normalization factors as computed by edgeR.}
 
-\item{Y}{An array or dataframe}
+\item{design}{A model matrix; The first column should be all 1s. The second column should have two unique values,
+corresponding to the groups}
 }
 \description{
-Computes p-values using a Mann Whitney U-test. The data is normalized using edgeR.
+Computes p-values using a Mann-Whitney U Test for the null hypothesis \eqn{H_0: \beta_j = 0}.
 }
 \examples{
-Y <- rnbinom(40*100, mu = 10, size = 1/0.2)
-Y <- data.frame(array(Y, dim = c(40, 100)))
-X <- as.factor(rep(c("A", "B"), each = 20))
-MWUTest(X, Y, 100)
+Y <- rnbinom(20*10, mu = 10, size = 1/0.2)
+Y <- data.frame(array(Y, dim = c(20, 10)))
+X1 <- as.factor(rep(c("A", "B"), each = 20/2))
+design <- model.matrix(~X1, contrasts.arg = list(X1 = "contr.sum"))
+dge <- edgeR::DGEList(counts = t(Y), group = X1)
+dge <- edgeR::calcNormFactors(dge)
+MWUTest(dge, design)
+}
+\author{
+Jakob Walter
 }

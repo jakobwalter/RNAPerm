@@ -1,13 +1,14 @@
 Package: RNAPerm
-Title: Testing Differential Expression using Permutation Tests.
+Title: Testing Differential Expression using Permutation Tests
 Version: 0.0.0.9000
-Authors@R: 
-    person("Jakob", "Walter", , "jakob.walter@outlook.de", role = "aut")
+Authors@R: c(person("Jakob", "Walter", role = c("aut", "cre"),
+                     email = "Jakob.Walter@outlook.de"))
 Description: Implements Permutation Tests for RNA-Seq Data. Additional to classical permutation tests and the Mann-Whitney U-Test, the FlipScores Test is implemented.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
+Depends: R (>= 3.1.0), edgeR
 Suggests: 
     knitr,
     rmarkdown

@@ -6,6 +6,7 @@
 #' corresponding to the groups
 #' @author Jakob Walter
 #' @import edgeR
+#' @importFrom stats wilcox.test
 #' @export
 #' @examples
 #' Y <- rnbinom(20*10, mu = 10, size = 1/0.2)
@@ -14,7 +15,7 @@
 #' design <- model.matrix(~X1, contrasts.arg = list(X1 = "contr.sum"))
 #' dge <- edgeR::DGEList(counts = t(Y), group = X1)
 #' dge <- edgeR::calcNormFactors(dge)
-#' flipScoresTest(dge, design, 200)
+#' MWUTest(dge, design)
 
 
 MWUTest <- function(dge, design){ 

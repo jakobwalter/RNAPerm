@@ -35,10 +35,13 @@ X1 <- as.factor(rep(c("A", "B"), each = 20/2))
 design <- model.matrix(~X1, contrasts.arg = list(X1 = "contr.sum"))
 dge <- edgeR::DGEList(counts = t(Y), group = X1)
 dge <- edgeR::calcNormFactors(dge)
-pFlipScores <- flipScoresTest(dge, design, 2000)
+flipScoresTest(dge, design, scoreType = c("basic"), nPerm = 100)
 }
 \references{
 Hemerik, Jesse, Jelle J. Goeman, and Livio Finos.
 "Robust testing in generalized linear models by sign flipping score contributions."
 Journal of the Royal Statistical Society: Series B (Statistical Methodology) 82.3 (2020): 841-864.
+}
+\author{
+Jakob Walter
 }

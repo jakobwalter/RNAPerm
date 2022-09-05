@@ -25,5 +25,11 @@ X1 <- as.factor(rep(c("A", "B"), each = 20/2))
 design <- model.matrix(~X1, contrasts.arg = list(X1 = "contr.sum"))
 dge <- edgeR::DGEList(counts = t(Y), group = X1)
 dge <- edgeR::calcNormFactors(dge)
-pClassic <- classicPermTest(dge, design, 2000)
+pClassic <- classicPermTest(dge, design, 200)
+}
+\references{
+Hemerik, Jesse, and Jelle Goeman. "Exact testing with random permutations." Test 27.4 (2018): 811-825.
+}
+\author{
+Jakob Walter
 }
