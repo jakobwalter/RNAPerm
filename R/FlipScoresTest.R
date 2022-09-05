@@ -20,7 +20,7 @@
 #' design <- model.matrix(~X1, contrasts.arg = list(X1 = "contr.sum"))
 #' dge <- edgeR::DGEList(counts = t(Y), group = X1)
 #' dge <- edgeR::calcNormFactors(dge)
-#' pFlipScores <- flipScoresTest(dge, design, 2000)
+#' flipScoresTest(dge, design, 200)
 
 flipScoresTest <- function(dge, design, scoreType = c("basic", "effective"),  toBeTested = 2, nPerm = 5000){
   scoreType <- match.arg(scoreType)

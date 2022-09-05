@@ -1,16 +1,19 @@
-#' MWU-Test for RNA-Seq Data
+#' MWU test for RNA-Seq Data
 #'
-#' Computes p-values using a Mann Whitney U-test. The data is normalized using edgeR.
-#' @param X A vector encoded as a factor with two levels. 
-#' The levels encode the two different classes that are to be tested for differential expression.
-#' @param Y An array or dataframe 
+#' Computes p-values using a Mann-Whitney U Test for the null hypothesis \eqn{H_0: \beta_j = 0}.
+#' @param dge A dgeList object, created with edgeR, containing the normalization factors as computed by edgeR.
+#' @param design A model matrix; The first column should be all 1s. The second column should have two unique values, 
+#' corresponding to the groups
 #' @import edgeR
 #' @export
 #' @examples
-#' Y <- rnbinom(40*100, mu = 10, size = 1/0.2)
-#' Y <- data.frame(array(Y, dim = c(40, 100)))
-#' X <- as.factor(rep(c("A", "B"), each = 20))
-#' MWUTest(X, Y, 100)
+#' Y <- rnbinom(20*10, mu = 10, size = 1/0.2)
+#' Y <- data.frame(array(Y, dim = c(20, 10)))
+#' X1 <- as.factor(rep(c("A", "B"), each = 20/2))
+#' design <- model.matrix(~X1, contrasts.arg = list(X1 = "contr.sum"))
+#' dge <- edgeR::DGEList(counts = t(Y), group = X1)
+#' dge <- edgeR::calcNormFactors(dge)
+#' flipScoresTest(dge, design, 200)
 
 
 MWUTest <- function(dge, design){ 

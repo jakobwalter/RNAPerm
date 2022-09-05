@@ -15,7 +15,7 @@
 #' design <- model.matrix(~X1, contrasts.arg = list(X1 = "contr.sum"))
 #' dge <- edgeR::DGEList(counts = t(Y), group = X1)
 #' dge <- edgeR::calcNormFactors(dge)
-#' pClassic <- classicPermTest(dge, design, 2000)
+#' pClassic <- classicPermTest(dge, design, 200)
 
 
 
