@@ -4,6 +4,7 @@
 #' @param dge A dgeList object, created with edgeR, containing the normalization factors as computed by edgeR.
 #' @param design A model matrix; The first column should be all 1s. The second column should have two unique values, 
 #' corresponding to the groups
+#' @author Jakob Walter
 #' @import edgeR
 #' @export
 #' @examples

@@ -11,6 +11,7 @@
 #' @param scoreType Type of Score contributions on which flipping is performed
 #' @param toBeTested index of column of design matrix which is tested 
 #' @param nPerm Number of random permutations used for the computation of the p-value
+#' @author Jakob Walter
 #' @import edgeR
 #' @export
 #' @examples

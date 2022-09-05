@@ -7,6 +7,8 @@
 #' corresponding to the groups
 #' @param nPerm Number of random permutations used for the computation of the p-value
 #' @import edgeR
+#' @references Hemerik, Jesse, and Jelle Goeman. "Exact testing with random permutations." Test 27.4 (2018): 811-825.
+#' @author Jakob Walter
 #' @export
 #' @examples
 #' Y <- rnbinom(20*10, mu = 10, size = 1/0.2)

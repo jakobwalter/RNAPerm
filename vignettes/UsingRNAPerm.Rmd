@@ -28,7 +28,9 @@ X1 <- as.factor(rep(c("A", "B"), each = n/2))
 design <- model.matrix(~X1, contrasts.arg = list(X1 = "contr.sum"))
 dge <- edgeR::DGEList(counts = t(Y), group = X1)
 dge <- edgeR::calcNormFactors(dge)
+```
 
+```{r Get p-values}
 pClassic <- classicPermTest(dge, design, 2000)
 pMWU     <- classicPermTest(dge, design, 2000)
 pFlipScoresBasic <- FlipScoresTest(dge, design, scoreType = "basic", toBeTested = 2)
@@ -36,52 +38,8 @@ pFlipScoresEffective <- FlipScoresTest(dge, design, scoreType = "effective", toB
 ```
 
 
-```{r}
-hist(pClassic, breaks = 100)
-hist(pMWU, breaks = 100)
-hist(pFlipScoresBasic, breaks = 100)
-hist(pFlipScoresEffective, breaks = 100)
-```
 
 
-
-
-
-
-
-
-
-```{r}
-p <- FlipScoresTest(dge, design, scoreType = "effective")
-hist(p, breaks = 200)
-```
-
-
-```{r}
-
-```
-
-
-```{r}
-qqplot(runif(1000), pClassic, type = "l")
-qqplot(runif(1000), pFlipScoresBasic, type = "l")
-qqline(pMWU, distribution = qunif)
-```
-
-```{r}
-```
-
-
-
-
-
-```{r}
-x <- seq(0, 1, length.out = 10000)
-plot(x, sort(p1), type = "l", col = "purple")
-lines(x, sort(p2), col = "darkgreen")
-lines(x, sort(p3), col = "blue")
-lines(x, x, col = "red")
-```
 
 
 
