@@ -15,26 +15,30 @@
 #' ClassicPermTest(X, Y, 100)
 
 
-ClassicPermTest <- function(X, Y, nPerm){
+classicPermTest <- function(dge, design, nPerm){
+  if (ncol(design) > 2){
+    stop("Classical Permutation Test only works for two-group comparisons!")
+  }
+  if (class(dge)[1] != "DGEList"){
+    stop("Class of DGE needs to be DGEList (edgeR)")
+  }
+  if (all(dge$samples$norm.factors == 1)){
+    warning("Data might not be normalized!")
+  }
+  
   ## Normalize Data Using EdgeR
-  
-  ### Compute Normalization Factors
-  d <- edgeR::DGEList(counts = Y)
-  d <- edgeR::calcNormFactors(d)
-  
-  ### Normalize Data
-  Y <- d$counts * d$samples$norm.factors
+  Y <- dge$counts * dge$samples$norm.factors
   
   ## Create empty array for test statistics
-  testStatistics <- array(dim = c(nPerm, ncol(Y)))
+  testStatistics <- array(dim = c(nPerm, nrow(Y)))
   
   ## first test-statistics are the ones observed
-  testStatistics[1,] <- abs(colMeans(Y[X == levels(X)[1],]) - colMeans(Y[X == levels(X)[2],]))
+  testStatistics[1,] <- abs(rowMeans(Y[,design[,2] == design[1,2]]) - rowMeans(Y[,design[,2] != design[1,2]]))
   
   ## Compute permutation test-statistics using nPerm-1 permutations
   for (i in 2:nPerm){
-    XPerm <- sample(X)
-    testStatistics[i,] <- abs(colMeans(Y[XPerm == levels(X)[1],]) - colMeans(Y[XPerm == levels(X)[2],]))
+    XPerm <- sample(design[,2])
+    testStatistics[i,] <- abs(rowMeans(Y[,XPerm == design[1,2]]) - rowMeans(Y[,XPerm != design[1,2]]))
   }
   
   ## compute proportion of permutation test-statistics larger than the observed ones

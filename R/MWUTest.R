@@ -13,8 +13,19 @@
 #' MWUTest(X, Y, 100)
 
 
-MWUTest <- function(X, Y){
+MWUTest <- function(dge, design){ 
+  if (ncol(design) > 2){
+    stop("Classical Permutation Test only works for two-group comparisons!")
+  }
+  if (class(dge)[1] != "DGEList"){
+    stop("Class of DGE needs to be DGEList (edgeR)")
+  }
+  if (all(dge$samples$norm.factors == 1)){
+    warning("Data might not be normalized!")
+  }
+  
   ## Normalize Data Using EdgeR
+  Y <- dge$counts * dge$samples$norm.factors
   
   ### Compute Normalization Factors
   d <- edgeR::DGEList(counts = Y)
@@ -23,8 +34,8 @@ MWUTest <- function(X, Y){
   ### Normalize Data
   Y <- d$counts * d$samples$norm.factors
   
-  pVals <- apply(Y, 2, function(rowi){
-    suppressWarnings(wilcox.test(rowi[X == levels(X)[1]], rowi[X == levels(X)[2]])$p.value)
+  pVals <- apply(Y, 1, function(rowi){
+    suppressWarnings(wilcox.test(rowi[design[,2] == design[1,2]], rowi[design[,2] == design[1,2]])$p.value)
     }
     )
 

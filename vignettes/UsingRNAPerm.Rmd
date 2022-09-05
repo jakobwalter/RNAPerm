@@ -19,16 +19,61 @@ library(RNAPerm)
 ```
 
 
+```{r Generate Example Data}
+n <- 12
+p <- 1000
+Y <- rnbinom(n*p, mu = 10, size = 1/0.2)
+Y <- data.frame(array(Y, dim = c(n, p)))
+X1 <- as.factor(rep(c("A", "B"), each = n/2))
+design <- model.matrix(~X1, contrasts.arg = list(X1 = "contr.sum"))
+dge <- edgeR::DGEList(counts = t(Y), group = X1)
+dge <- edgeR::calcNormFactors(dge)
+
+pClassic <- classicPermTest(dge, design, 2000)
+pMWU     <- classicPermTest(dge, design, 2000)
+pFlipScoresBasic <- FlipScoresTest(dge, design, scoreType = "basic", toBeTested = 2)
+pFlipScoresEffective <- FlipScoresTest(dge, design, scoreType = "effective", toBeTested = 2)
+```
+
 
 ```{r}
-### Generate data from NB distribution and put into array
-Y <- rnbinom(200*10000, mu = 10, size = 1/2)
-Y <- data.frame(array(Y, dim = c(200, 10000)))
-X <- as.factor(rep(c("A", "B"), each = 100))
-p1 <- ClassicPermTest(X, Y, 1000)
-p2 <- MWUTest(X, Y)
-p3 <- FlipScoresTestNoCovBasic(X, Y, 1000)
+hist(pClassic, breaks = 100)
+hist(pMWU, breaks = 100)
+hist(pFlipScoresBasic, breaks = 100)
+hist(pFlipScoresEffective, breaks = 100)
 ```
+
+
+
+
+
+
+
+
+
+```{r}
+p <- FlipScoresTest(dge, design, scoreType = "effective")
+hist(p, breaks = 200)
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+qqplot(runif(1000), pClassic, type = "l")
+qqplot(runif(1000), pFlipScoresBasic, type = "l")
+qqline(pMWU, distribution = qunif)
+```
+
+```{r}
+```
+
+
+
+
 
 ```{r}
 x <- seq(0, 1, length.out = 10000)

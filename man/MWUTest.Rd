@@ -4,7 +4,7 @@
 \alias{MWUTest}
 \title{MWU-Test for RNA-Seq Data}
 \usage{
-MWUTest(X, Y)
+MWUTest(dge, design)
 }
 \arguments{
 \item{X}{A vector encoded as a factor with two levels.
