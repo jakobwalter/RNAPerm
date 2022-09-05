@@ -1,21 +1,29 @@
-#' Classic Permutation Test for RNA-Seq Data
+#' FlipScores test for RNA-Seq Data
 #'
 #' Computes p-values using a classic permutation test based on the absolute
-#' difference in means. The data is normalized using edgeR.
-#' @param X A vector encoded as a factor with two levels. 
-#' The levels encode the two different classes that are to be tested for differential expression.
-#' @param Y An array or dataframe 
+#' difference in means for the null hypothesis \eqn{H_0: \beta_j = 0}.
+#' @references Hemerik, Jesse, Jelle J. Goeman, and Livio Finos. 
+#' "Robust testing in generalized linear models by sign flipping score contributions." 
+#' Journal of the Royal Statistical Society: Series B (Statistical Methodology) 82.3 (2020): 841-864.
+#' @param dge A dgeList object, created with edgeR, containing the normalization factors as computed by edgeR.
+#' @param design A model matrix; The first column should be all 1s. The second column should have two unique values, 
+#' corresponding to the groups
+#' @param scoreType Type of Score contributions on which flipping is performed
+#' @param toBeTested index of column of design matrix which is tested 
 #' @param nPerm Number of random permutations used for the computation of the p-value
-#' @keywords Internal
 #' @import edgeR
 #' @export
 #' @examples
-#' Y <- rnbinom(40*100, mu = 10, size = 1/0.2)
-#' Y <- data.frame(array(Y, dim = c(40, 100)))
-#' X <- as.factor(rep(c("A", "B"), each = 20))
-#' FlipScoresTestNoCovBasic (X, Y, 100)
+#' Y <- rnbinom(20*10, mu = 10, size = 1/0.2)
+#' Y <- data.frame(array(Y, dim = c(20, 10)))
+#' X1 <- as.factor(rep(c("A", "B"), each = 20/2))
+#' design <- model.matrix(~X1, contrasts.arg = list(X1 = "contr.sum"))
+#' dge <- edgeR::DGEList(counts = t(Y), group = X1)
+#' dge <- edgeR::calcNormFactors(dge)
+#' pFlipScores <- flipScoresTest(dge, design, 2000)
 
-FlipScoresTest <- function(dge, design, scoreType = "basic",  toBeTested = 2, nPerm = 5000){
+flipScoresTest <- function(dge, design, scoreType = c("basic", "effective"),  toBeTested = 2, nPerm = 5000){
+  scoreType <- match.arg(scoreType)
   ## Normalize Data Using EdgeR
   ### Compute Normalization Factors
   os <- edgeR::getOffset(dge)
