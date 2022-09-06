@@ -32,12 +32,6 @@ MWUTest <- function(dge, design){
   ## Normalize Data Using EdgeR
   Y <- dge$counts * dge$samples$norm.factors
   
-  ### Compute Normalization Factors
-  d <- edgeR::DGEList(counts = Y)
-  d <- edgeR::calcNormFactors(d)
-  
-  ### Normalize Data
-  Y <- d$counts * d$samples$norm.factors
   
   pVals <- apply(Y, 1, function(rowi){
     suppressWarnings(wilcox.test(rowi[design[,2] == design[1,2]], rowi[design[,2] == design[1,2]])$p.value)
